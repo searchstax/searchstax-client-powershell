@@ -1,5 +1,8 @@
 # PowerShell script for listing the APIkey of a deployment.
 
+# Removes TLS obstacles from connection. Otherwise connections fail. 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
+
 $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
@@ -30,10 +33,6 @@ $headers.Add("Authorization", "Token $TOKEN")
 
 Write-Host "Checking number of DEPLOYMENTS in Tenant Account"
 #GET https://app.searchstax.com/api/rest/v2/account/<account_name>/deployment/
-
-# Set up HTTP header for authorization token
-$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("Authorization", "Token $TOKEN")
 
 $DEPLOYMENTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/SilverQAAccount/deployment/" -Method Get -ContentType 'application/json' -Headers $headers
 #$DEPLOYMENTS1 = $DEPLOYMENTS | ConvertTo-Json

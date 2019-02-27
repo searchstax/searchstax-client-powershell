@@ -1,7 +1,13 @@
 If your PowerShell script refuses to connect to the remote server, try these two tips:
 
-Run PowerShell as Administrator. Enter "Set-ExecutionPolicy RemoteSigned". This get around one barrier. Exit.
+Run PowerShell as Administrator. Enter "Set-ExecutionPolicy RemoteSigned". Otherwise, PowerShell 
+won't connect to cloud servers. This seems to be a one-time fix. 
 
-Open the PowerShell windows where you will be working. Before running any scripts, enter "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12".  The gets around TLS version errors. 
+Open the PowerShell window where you will be working. Before running any scripts, enter "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12". Otherwise, PowerShell
+runs into TLS version issues and fails to connect. 
 
-It is not clear to me how often these incantations must be repeated. -- Bruce Clayton
+I have added this setting to all of the 
+scripts as boilerplate, even though it really needs to be executed only once per session. 
+
+-- Bruce Clayton
+   SeachStax Support
