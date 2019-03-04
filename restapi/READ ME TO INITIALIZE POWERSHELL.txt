@@ -12,5 +12,8 @@ Otherwise, PowerShell runs into TLS version issues and fails to connect.
 I have added this setting to all of the scripts as boilerplate, even though it really needs 
 to be executed only once per session. 
 
+There is an article here (https://stackoverflow.com/questions/49476326/displaying-unicode-in-powershell)
+about getting PowerShell to display unicode characters properly. 
+
 -- Bruce Clayton
    SeachStax Support
