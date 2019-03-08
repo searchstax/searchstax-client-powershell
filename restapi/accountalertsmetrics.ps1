@@ -1,4 +1,4 @@
-# Script for listing the alerts metrics of an account. 
+# Script for listing the alerts metrics of an account. Writes to C:\metrics.txt.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -33,9 +33,10 @@ $headers.Add("Authorization", "Token $TOKEN")
 # GET /api/rest/v2/account/<account>/alerts/metrics/
 
 $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/alerts/metrics/" -Method Get -Headers $headers
-$RESULTS = $RESULTS | ConvertTo-Json
 
-Write-Host $RESULTS
+Write-Host "Writing list of alert metrics to C:\metrics.txt."
+$RESULTS = $RESULTS | ConvertTo-Json | Out-File C:\metrics.txt
+
 
 Write-Host "Exit..."
 Exit

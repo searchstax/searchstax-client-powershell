@@ -1,4 +1,4 @@
-# Script for creating an alert in an deployment. 
+# Script for enabling/disabling all alerts in an account. 
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -50,31 +50,16 @@ $uid = ForEach ($Result in $DEPLOYMENTS.results) { IF( $Result.name -eq 'SolrFro
 Write-Host "SolrFromAPI UID is $uid"
 Write-Host
 
-Write-Host "Adding an alert to $uid"
-Write-Host
-#
 $body = @{
-    name='testing disk usage'
-    metric='system_disk_space_used'
-    threshold='50'
-    unit='GB'
-    operator='<'
-    host='*'
-    delay_mins='1'
-    max_alerts='2'
-    repeat_every='5'
-    email=@('bruce+null@searchstax.com')
+    status='disable'
 }
 
 $body = $body | ConvertTo-Json
 
-Write-Host "Adding new alert to $uid..."
-Write-Host $body
+Write-Host "Enabling/Disabling alert $ALERTID on $uid..."
+# PUT /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/all/
 
-
-# POST /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/
-
-$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Post -Body $body -ContentType 'application/json' -Headers $headers
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/all/" -Method Put -body $body -ContentType 'application/json' -Headers $headers
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS

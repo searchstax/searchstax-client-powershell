@@ -1,4 +1,4 @@
-# Script for creating an alert in an deployment. 
+# Script for listing the heartbeat alerts of an account and their properties. 
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -50,31 +50,10 @@ $uid = ForEach ($Result in $DEPLOYMENTS.results) { IF( $Result.name -eq 'SolrFro
 Write-Host "SolrFromAPI UID is $uid"
 Write-Host
 
-Write-Host "Adding an alert to $uid"
-Write-Host
-#
-$body = @{
-    name='testing disk usage'
-    metric='system_disk_space_used'
-    threshold='50'
-    unit='GB'
-    operator='<'
-    host='*'
-    delay_mins='1'
-    max_alerts='2'
-    repeat_every='5'
-    email=@('bruce+null@searchstax.com')
-}
+Write-Host "Getting the list of heartbeat alerts from $uid"
+# GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/heartbeat/
 
-$body = $body | ConvertTo-Json
-
-Write-Host "Adding new alert to $uid..."
-Write-Host $body
-
-
-# POST /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/
-
-$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Post -Body $body -ContentType 'application/json' -Headers $headers
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" -Method Get -Headers $headers
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
