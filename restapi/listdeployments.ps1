@@ -1,4 +1,4 @@
-# PowerShell script for deleting SolrFromAPI.
+# PowerShell script for listing the deployments of an account.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
