@@ -3,12 +3,11 @@
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
 
-$USER = "your login"
-#$PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
-#$PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
-$ACCOUNT = "Your Account"
-$uid = "Your deployment uid"
-$PASSWORD = "Your Password"
+$USER = "bruce@searchstax.com"
+$PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
+$PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
+$ACCOUNT = "SilverQAAccount"
+$uid = "ss571300"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -31,6 +30,25 @@ Write-Host
 # Set up HTTP header for authorization token
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
+
+# Get the deployment details (specifications) for this deployment. 
+
+$DETAILS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/" -Method Get -ContentType 'application/json' -Headers $headers
+#$DETAILS1 = $DETAILS | ConvertTo-Json
+
+#Write-Host $DETAILS1
+#Write-Host
+
+$GB = [math]::pow( 1024, 3 )  # To convert raw memory to rounded GB like the API uses.
+
+$DISK = $DETAILS.specifications.disk_space / $GB
+$JVM = $DETAILS.specifications.jvm_heap_memory / $GB
+$MEMORY = $DETAILS.specifications.physical_memory / $GB
+
+Write-Host "Disk space is $DISK GB"
+Write-Host "JVM heap memory is $JVM GB"
+Write-Host "Physical memory is $MEMORY GB"
+Write-Host
 
 # *****************************************************************
 # Delete all alerts from target deployment.
@@ -87,8 +105,6 @@ Write-Host $RESULTS
 # SearchStax does not offer a percentage threshold alert for JVM Heap Memory Used. 
 # Set desired threshold percentage...
 $PERCENT = 80
-# Inspect the Pulse > CPU Memory JVM > JVM Heap Memory Usage graph to find the max JVM memory limit.
-$JVM = 2.00  # GB
 $THRESHOLD = $JVM * $PERCENT / 100
 Write-Host "JVM Usage threshold is $THRESHOLD GB"
 
@@ -123,9 +139,7 @@ Write-Host $RESULTS
 # SearchStax does not offer a percentage threshold alert for Disk Space Used. 
 # Set desired threshold percentage...
 $PERCENT = 80
-# Inspect the deployment's details screen for the max disk space
-$DISKSPACE = 32  # GB
-$THRESHOLD = $DISKSPACE * $PERCENT / 100
+$THRESHOLD = $DISK * $PERCENT / 100
 Write-Host "Disk Usage threshold is $THRESHOLD GB"
 
 $body = @{
