@@ -60,6 +60,11 @@ $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/accoun
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
+Write-Host
+
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "heartbeat alerts in" $RESULTS.deployment
+Write-Host
 
 Write-Host "Deleting all threshold alerts from $uid..."
 # DELETE /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/all/
@@ -68,6 +73,11 @@ $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/accoun
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
+Write-Host
+
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "threshold alerts in" $RESULTS.deployment
+Write-Host
 
 # This prompt pauses the script so you can check to see of all alerts were deleted. 
 $pause = Read-Host -Prompt 'Check alert lists... Then press ENTER.'
@@ -359,6 +369,18 @@ $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/accoun
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
+Write-Host
+
+# ******************************************************************
+# Check results.
+
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "heartbeat alerts in" $RESULTS.deployment
+Write-Host
+
+$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "threshold alerts in" $RESULTS.deployment
+Write-Host
 
 Write-Host "Exit..."
 Exit

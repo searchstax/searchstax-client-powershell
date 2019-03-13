@@ -54,9 +54,13 @@ Write-Host "Getting the list of heartbeat alerts from $uid"
 # GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/heartbeat/
 
 $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "heartbeat alerts in" $RESULTS.deployment
+Write-Host
+
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
+
 
 Write-Host "Exit..."
 Exit

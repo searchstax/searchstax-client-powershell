@@ -54,6 +54,9 @@ Write-Host "Getting the list of alerts from $uid"
 # GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/
 
 $RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Get -Headers $headers
+Write-Host "There are" $RESULTS.alerts.Count "threshold alerts in" $RESULTS.deployment
+Write-Host
+
 $RESULTS = $RESULTS | ConvertTo-Json
 
 Write-Host $RESULTS
