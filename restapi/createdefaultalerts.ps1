@@ -7,7 +7,7 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverQAAccount"
-$uid = "ss571300"
+$uid = "ss116667"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -353,7 +353,7 @@ $body = @{
     name='Heartbeat Alert'
     host='*'
     failures='5'
-    interval='2'
+    interval='10'
     max_alerts='1'
     email=@('bruce+null@searchstax.com')
 }
