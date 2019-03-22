@@ -21,8 +21,8 @@ Remove-Variable PASSWORD
 
 $body = $body | ConvertTo-Json
 
-#$TOKEN = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/obtain-auth-token/" -Method Post -Body $body -ContentType 'application/json' 
-#$TOKEN = $TOKEN.token
+$TOKEN = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/obtain-auth-token/" -Method Post -Body $body -ContentType 'application/json' 
+$TOKEN = $TOKEN.token
 Remove-Variable body
 
 Write-Host "Obtained TOKEN" $TOKEN
@@ -33,11 +33,10 @@ Write-Host "Checking number of DEPLOYMENTS in Tenant Account"
 
 # Set up HTTP header for authorization token
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-#$headers.Add("Authorization", "Token $TOKEN")
-$headers.Add("Authorization", "Token 77ab2da8e3aca8d6798aa199d458e53eb0e4378a")
+$headers.Add("Authorization", "Token $TOKEN")
  
 $DEPLOYMENTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/" -Method Get -ContentType 'application/json' -Headers $headers
-#$DEPLOYMENTS1 = $DEPLOYMENTS | ConvertTo-Json
+$DEPLOYMENTS1 = $DEPLOYMENTS | ConvertTo-Json
 
 #Write-Host $DEPLOYMENTS1
 #Write-Host
