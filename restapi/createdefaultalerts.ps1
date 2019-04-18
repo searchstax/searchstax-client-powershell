@@ -7,7 +7,7 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverQAAccount"
-$uid = "ss116667"
+$uid = "ss948822"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
