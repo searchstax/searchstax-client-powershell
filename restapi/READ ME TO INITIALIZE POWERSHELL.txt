@@ -1,3 +1,19 @@
+This file contains miscellaneous notes on using Microsoft PowerShell with the SearchStax
+API for Pulse metrics alerts and for managing Zookeeper configurations.
+
+POWERSHELL VERSION:
+
+To determine what version of PowerShell you are running, evaluate $PSVersionTable.PSVersion. 
+
+All but one of the SearchStax Powershell test scripts ran successfully in PowerShell 5.1. 
+
+The zookeeperconfigcreate.ps1 script requires PowerShell Core 6.1+. We used Version 6.2.
+
+Version 6.2 may be downloaded from https://github.com/PowerShell/PowerShell/releases
+
+The issue is PowerShell's long-standing difficulty with multipart/form-data, which is required
+by zookeeperconfigcreate.ps1. See Example 4 of https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-6
+
 CAN'T CONNECT:
 
 If your PowerShell script refuses to connect to the remote server, try these two tips:
@@ -11,7 +27,7 @@ Open the PowerShell window where you will be working. Before running any scripts
 
 Otherwise, PowerShell runs into TLS version issues and fails to connect. 
 
-I have added the latter setting to all of the scripts as boilerplate, even though it really needs 
+We have added the latter setting to all of the scripts as boilerplate, even though it really needs 
 to be executed only once per session. 
 
 DISPLAY OF UNICODE CHARACTERS
@@ -23,7 +39,7 @@ Like this:
        "operator":  "\u003e",
 
 There is an article here (https://stackoverflow.com/questions/49476326/displaying-unicode-in-powershell)
-about getting PowerShell to display unicode characters properly. 
+about getting PowerShell to display unicode characters properly. We just ignored it. 
 
 KNOWN BUGS:
 
