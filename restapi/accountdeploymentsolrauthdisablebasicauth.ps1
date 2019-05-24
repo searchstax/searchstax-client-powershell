@@ -1,5 +1,5 @@
-# account > deployment > alerts > heartbeat > list
-# Script for listing the heartbeat alerts of an account and their properties. 
+# account > deployment > solr > auth > disable_basic_auth
+# PowerShell script for disabling Solr Basic Auth for a deployment.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -8,7 +8,8 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverQAAccount"
-$uid = "ss416352"
+$uid = "ss213022"
+$APIKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTEwNDUyODAsImp0aSI6ImNlNWJhZGM0OWVmODg3ODllZDVlNWZjZjM1ODg3OWQyYTQ0ZmU4MWQiLCJzY29wZSI6WyJkZXBsb3ltZW50LmRlZGljYXRlZGRlcGxveW1lbnQiXSwidGVuYW50X2FwaV9hY2Nlc3Nfa2V5IjoiS2c1K3BJR1pReW1vKzlCTUM2RjYyQSJ9.ziCYzMAvTEsKNOxIfoEG54RDJQu19NQSN1P5_f6alls"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -28,22 +29,24 @@ Remove-Variable body
 Write-Host "Obtained TOKEN" $TOKEN
 Write-Host
 
-# Set up HTTP header for authorization token
+# Set up HTTP header for authorization
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
+#$headers.Add("Authorization", "APIkey $APIKEY")
 
-Write-Host "Getting the list of heartbeat alerts from $uid"
-# GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/heartbeat/
-
-$RESULTS = Invoke-RestMethod -Method Get -Headers $headers `
-          -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" 
-Write-Host "There are" $RESULTS.alerts.Count "heartbeat alerts in" $RESULTS.deployment
+Write-Host "Disabling Solr Basic Auth for $uid"
 Write-Host
 
-$RESULTS = $RESULTS | ConvertTo-Json
+#GET https://app.searchstax.com/api/rest/v2/account/<account_name>/deployment/<uid>/solr/auth/disable/
+$RESULT = Invoke-RestMethod -Method Get -Headers $headers `
+         -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/solr/auth/disable/" 
+$RESULT = $RESULT | ConvertTo-Json
 
-Write-Host $RESULTS
-
+Write-Host $RESULT
+Write-Host
 
 Write-Host "Exit..."
 Exit
+
+
+

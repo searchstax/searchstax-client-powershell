@@ -1,3 +1,4 @@
+# account > alerts > metrics
 # Script for listing the alerts metrics of an account. Writes to C:\metrics.txt.
 # You may need to run PowerShell AS THE ADMINISTRATOR to write the text file at the end. 
 
@@ -33,7 +34,8 @@ $headers.Add("Authorization", "Token $TOKEN")
 
 # GET /api/rest/v2/account/<account>/alerts/metrics/
 
-$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/alerts/metrics/" -Method Get -Headers $headers
+$RESULTS = Invoke-RestMethod -Method Get -Headers $headers `
+          -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/alerts/metrics/" 
 
 Write-Host "Available metrics are..."
 Foreach ($METRIC in $RESULTS) {Write-Host $METRIC.description}

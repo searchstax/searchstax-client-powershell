@@ -1,5 +1,5 @@
-# account > deployment > alerts > heartbeat > list
-# Script for listing the heartbeat alerts of an account and their properties. 
+# account > apikey > deployment_apikeys
+# PowerShell script for listing the APIkey of a deployment.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -8,7 +8,8 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverQAAccount"
-$uid = "ss416352"
+$uid = "ss213022"
+$APIKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTU2ODk4MzAsImp0aSI6IjEzNGUyNWQ2NGMzNDcxZTcyNjFlOWJmNDEyZjYyZjk5NTA1MjZhNDEiLCJzY29wZSI6WyJkZXBsb3ltZW50LmRlZGljYXRlZGRlcGxveW1lbnQiXSwidGVuYW50X2FwaV9hY2Nlc3Nfa2V5IjoiS2c1K3BJR1pReW1vKzlCTUM2RjYyQSJ9.UJp9PjneR8CozXS8ihoEYF97opeAp8hOIN7ez536y_w"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -32,18 +33,26 @@ Write-Host
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
-Write-Host "Getting the list of heartbeat alerts from $uid"
-# GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/heartbeat/
+$body = @{
+    deployment=$uid
+}
 
-$RESULTS = Invoke-RestMethod -Method Get -Headers $headers `
-          -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/heartbeat/" 
-Write-Host "There are" $RESULTS.alerts.Count "heartbeat alerts in" $RESULTS.deployment
+$body = $body | ConvertTo-Json
+
+Write-Host "APIkey associated with..."
+Write-Host $body
 Write-Host
 
-$RESULTS = $RESULTS | ConvertTo-Json
+#POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/list/
+$RESULT = Invoke-RestMethod -Method Post -body $body -ContentType 'application/json' -Headers $headers `
+         -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/apikey/list/" 
+$RESULT = $RESULT | ConvertTo-Json
 
-Write-Host $RESULTS
-
+Write-Host $RESULT
+Write-Host
 
 Write-Host "Exit..."
 Exit
+
+
+

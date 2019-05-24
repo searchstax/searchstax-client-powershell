@@ -1,3 +1,4 @@
+# account > deployment > alerts > read
 # Script for listing the alerts of an account and their properties. 
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
@@ -7,6 +8,7 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverQAAccount"
+$uid = "ss416352"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -26,34 +28,15 @@ Remove-Variable body
 Write-Host "Obtained TOKEN" $TOKEN
 Write-Host
 
-Write-Host "Checking number of DEPLOYMENTS in Tenant Account"
-#GET https://app.searchstax.com/api/rest/v2/account/<account_name>/deployment/
-
 # Set up HTTP header for authorization token
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
-$DEPLOYMENTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/" -Method Get -ContentType 'application/json' -Headers $headers
-#$DEPLOYMENTS1 = $DEPLOYMENTS | ConvertTo-Json
-
-#Write-Host $DEPLOYMENTS1
-#Write-Host
-Write-Host "Deployment COUNT is" $DEPLOYMENTS.count
-Write-Host
-
-# Get deployment UID from JSON output of $DEPLOYMENTS.
-
-Write-Host "Obtaining a deployment UID from list of deployments"
-Write-Host
-$uid = ForEach ($Result in $DEPLOYMENTS.results) { IF( $Result.name -eq 'SolrFromAPI') {$Result.uid } }
-
-Write-Host "SolrFromAPI UID is $uid"
-Write-Host
-
 Write-Host "Getting the list of alerts from $uid"
 # GET /api/rest/v2/account/{account_name}/deployment/{uid}/alerts/
 
-$RESULTS = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" -Method Get -Headers $headers
+$RESULTS = Invoke-RestMethod -Method Get -Headers $headers `
+          -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/alerts/" 
 Write-Host "There are" $RESULTS.alerts.Count "threshold alerts in" $RESULTS.deployment
 Write-Host
 
