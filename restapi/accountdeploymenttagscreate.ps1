@@ -1,3 +1,19 @@
+#   Copyright 2019 SearchStax, Inc.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#   -----------------------------------------------------------------------
+   
 # account > deployment > tags > create
 # PowerShell script for adding tags to SolrFromAPI.
 
@@ -7,8 +23,8 @@
 $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
-$ACCOUNT = "SilverQAAccount"
-$uid = "ss213022"
+$ACCOUNT = "WIK4IAALWC"
+$uid = "ss993924"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -33,7 +49,7 @@ $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
 $body = @{
-    tags='demo','test'
+    tags='SS-1990','BDC'
 }
 
 $body = $body | ConvertTo-Json
