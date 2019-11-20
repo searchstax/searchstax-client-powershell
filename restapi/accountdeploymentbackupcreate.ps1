@@ -14,8 +14,8 @@
 #
 #   -----------------------------------------------------------------------
    
-# Account > APIKey > Associate_APIKey_to_Deployment
-# PowerShell script for associating an APIkey with SolrFromAPI.
+# account > deployment > backup > create
+# PowerShell script for creating a backup.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -24,7 +24,6 @@ $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverSupportAccount"
-$APIKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NzQwMTA5NDgsImp0aSI6IjczYjBkYmMwY2I5YmIxYTk1YTUyZmNkMTM5ZWZiNDAxNzRiOGJmYmQiLCJzY29wZSI6WyJkZXBsb3ltZW50LmRlZGljYXRlZGRlcGxveW1lbnQiXSwidGVuYW50X2FwaV9hY2Nlc3Nfa2V5IjoiS2c1K3BJR1pReW1vKzlCTUM2RjYyQSJ9.RQ0d-jrXfMLniocjqegXcUEO8xZljHdRRbt0WgrdrbY"
 $uid = "ss380502"
 
 Write-Host "Asking for an authorization token for $USER..."
@@ -38,8 +37,7 @@ Remove-Variable PASSWORD
 
 $body = $body | ConvertTo-Json
 
-$TOKEN = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/obtain-auth-token/" `
-        -Method Post -Body $body -ContentType 'application/json' 
+$TOKEN = Invoke-RestMethod -uri "https://app.searchstax.com/api/rest/v2/obtain-auth-token/" -Method Post -Body $body -ContentType 'application/json' 
 $TOKEN = $TOKEN.token
 Remove-Variable body
 
@@ -50,29 +48,27 @@ Write-Host
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
-Write-Host "SolrFromAPI UID is $uid"
-Write-Host
-
 $body = @{
-    apikey=$APIKEY
-    deployment=$uid
+    backup_type='onetime'
+    region='us-west-1'
 }
 
 $body = $body | ConvertTo-Json
 
-Write-Host "Associating APIkey with deployment..." 
+# View the deployment input values
 Write-Host $body
-Write-Host
 
-#POST https://app.searchstax.com/api/rest/v2/account/<account_name>/apikey/associate/
-$RESULT = Invoke-RestMethod  -Method Post -body $body -ContentType 'application/json' -Headers $headers `
-         -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/apikey/associate/"
+Write-Host "Making backup of" $uid
+Write-Host
+#POST https://app.searchstax.com/api/rest/v2/account/<account_name>/deployment/<uid>/backup/
+$RESULT = Invoke-RestMethod -Method Post -body $body -ContentType 'application/json' -Headers $headers `
+         -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/backup/" 
 $RESULT = $RESULT | ConvertTo-Json
 
 Write-Host $RESULT
 Write-Host
 
-Write-Host "Exit..."
+Write Host "Exit..."
 Exit
 
 
