@@ -14,7 +14,7 @@
 #
 #   -----------------------------------------------------------------------
    
-# account > dns-record > partial_update
+# account > dns-record > associate
 # PowerShell script for updating a DNS CNAME record in a deployment.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
