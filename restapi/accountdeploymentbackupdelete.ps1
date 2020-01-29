@@ -25,7 +25,7 @@ $PASSWORD = $( Read-Host "Input password, please" -AsSecureString)
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "SilverSupportAccount"
 $SSID = "ss380502"
-$BUID = "26925"
+$BUID = "27004"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host

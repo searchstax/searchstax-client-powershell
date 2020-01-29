@@ -23,8 +23,8 @@
 $USER = "bruce@searchstax.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
-$ACCOUNT = "SilverQAAccount"
-$uid = "ss416352"
+$ACCOUNT = "SilverSupportAccount"
+$uid = "ss380502"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -52,7 +52,7 @@ Write-Host "Adding an alert to $uid"
 Write-Host
 #
 $body = @{
-    name='High Disk Usage'
+    name='High Disk Usage with Webhooks'
     metric='system_disk_space_used'
     threshold='50'
     unit='GB'
@@ -62,6 +62,8 @@ $body = @{
     max_alerts='2'
     repeat_every='5'
     email=@('bruce+null@searchstax.com')
+    webhook_trigger=2
+    webhook_resolve=5
 }
 
 $body = $body | ConvertTo-Json

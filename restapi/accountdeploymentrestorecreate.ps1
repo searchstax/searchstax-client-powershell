@@ -49,7 +49,7 @@ $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
 $body = @{
-    backup_id='27004'
+    backup_id='28682'
     replication_factor='3'
 }
 
