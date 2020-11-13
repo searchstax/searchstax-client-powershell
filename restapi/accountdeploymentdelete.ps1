@@ -15,7 +15,7 @@
 #   -----------------------------------------------------------------------
    
 # account > deployment > delete
-# PowerShell script for deleting SolrFromAPI.
+# PowerShell script for deleting a deployment.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -53,7 +53,7 @@ Write-Host "Deleting deployment" $uid
 Write-Host
 
 $RESULT = Invoke-RestMethod -Method Delete -ContentType 'application/json' -Headers $headers `
-         -uri "https://app.searchstax.com/api/rest/v2/account/SilverQAAccount/deployment/$uid/" 
+         -uri "https://app.searchstax.com/api/rest/v2/account/$ACCOUNT/deployment/$uid/" 
 $RESULT = $RESULT | ConvertTo-Json
 
 Write-Host $RESULT

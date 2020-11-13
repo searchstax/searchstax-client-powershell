@@ -4,3 +4,5 @@ restapi/accountdeploymentalertscreatetotalrequests.ps1
 restapi/conf.zip
 restapi/test_config.zip
 restapi/solr.ps1
+restapi/TEMPaccountdeploymentzookeeperconfigdelete.ps1
+restapi/TMPaccountdeploymentzookeeperconfigcreate.ps1
