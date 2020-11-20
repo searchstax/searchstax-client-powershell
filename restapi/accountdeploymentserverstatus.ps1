@@ -20,12 +20,12 @@
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
 
-$USER = "bruce@searchstax.com"
+$USER = "user@company.com"
 #$PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 #$PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
-$ACCOUNT = "SilverSupportAccount"
-$uid = "ss532858"
-$NODE = "ss532858-4"
+$ACCOUNT = "AccountName"
+$uid = "ss123456"
+$NODE = "ss123456-4"
 $APIKEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0YmY5MjkwYzNkZDdkMDgyNGY1MjE3ZDQ0ZmFmMzRhNzg5Mzg5NTkyIiwiaWF0IjoxNjA1Nzk3MzQ2LCJ0ZW5hbnRfYXBpX2FjY2Vzc19rZXkiOiI1MVF5a3FGdlRvK0pjeVNqOXdNd1pRIiwic2NvcGUiOlsiZGVwbG95bWVudC5kZWRpY2F0ZWRkZXBsb3ltZW50Il19.-LHhNnZza7Z6sE8bIEjMiIYG8Qj_BiQ6zmJyiIJ0P-4"
 
 #Write-Host "Asking for an authorization token for $USER..."
