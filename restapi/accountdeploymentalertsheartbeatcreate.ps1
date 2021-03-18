@@ -54,8 +54,7 @@ Write-Host
 $body = @{
     name='Heartbeat from API'
     host='*'
-    failures='1'
-    interval='2'
+    interval='5'
     max_alerts='5'
     email=@('bruce@searchstax.com')
     webhook_trigger=2
