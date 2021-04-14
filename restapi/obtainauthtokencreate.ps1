@@ -24,6 +24,7 @@ $USER = "user@company.com"
 $PASSWORD = $( Read-Host "Input password, please" -AsSecureString) 
 $PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PASSWORD))
 $ACCOUNT = "AccountName"
+$TFA = "123456"
 
 Write-Host "Asking for an authorization token for $USER..."
 Write-Host
@@ -31,6 +32,7 @@ Write-Host
 $body = @{
     username=$USER
     password=$PASSWORD
+    tfa_token=$TFA
 }
 Remove-Variable PASSWORD
 
