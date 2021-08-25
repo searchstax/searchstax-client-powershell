@@ -17,13 +17,11 @@
 # account > deployment > zookeeper-config > create
 # PowerShell script for adding a Zookeeper configset to a deployment.
 
-# NOTE: This script requires PowerShell Core 6.1+. We used Version 6.2.
+# NOTE: Use a version of PowerShell that supports multipart-form data, such as PowerShell Core 6.1+ 
+# or Powershell 7.0+. 
 
 # To determine what version of PowerShell you are running, evaluate $PSVersionTable.PSVersion. 
 # Version 6.2 may be downloaded from https://github.com/PowerShell/PowerShell/releases
-
-# The issue is PowerShell's long-standing difficulty with multipart/form-data. See Example 4 of
-# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-6
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
