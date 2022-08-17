@@ -7,9 +7,10 @@ To determine what version of PowerShell you are running, evaluate $PSVersionTabl
 
 All but one of the SearchStax Powershell test scripts ran successfully in PowerShell 5.1. 
 
-The zookeeperconfigcreate.ps1 script requires PowerShell Core 6.1+. We used Version 6.2.
+The zookeeperconfigcreate.ps1 script requires PowerShell 7. To download it, use this command in any version
+of Powershell:
 
-Version 6.2 may be downloaded from https://github.com/PowerShell/PowerShell/releases
+	> iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
 
 The issue is PowerShell's long-standing difficulty with multipart/form-data, which is required
 by zookeeperconfigcreate.ps1. See Example 4 of https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod?view=powershell-6
