@@ -1,4 +1,4 @@
-#   Copyright 2019 SearchStax, Inc.
+#   Copyright 2024 SearchStax, Inc.
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #   -----------------------------------------------------------------------
    
 # account > deployment > restore > create
-# PowerShell script for creating a backup.
+# PowerShell script for restoring a backup.
 
 # Removes TLS obstacles from connection. Otherwise connections fail. 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
@@ -48,9 +48,12 @@ Write-Host
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Token $TOKEN")
 
+# Set up list of individual collections to restore. If missing, all collections will be restored. 
+$list = @("collection1","collection3")
+
 $body = @{
     backup_id='28682'
-    replication_factor='3'
+    collections=$list
 }
 
 $body = $body | ConvertTo-Json
